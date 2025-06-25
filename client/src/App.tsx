@@ -7,6 +7,7 @@ import { trpc } from "@/trpc.ts";
 import { httpBatchLink } from "@trpc/client";
 import { env } from "@/lib/utils/env.ts";
 import { ExperienceList } from "@/features/experiences/components/ExperienceList.tsx";
+import { InfiniteScroll } from "@/features/shared/components/InfiniteScroll.tsx";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -56,12 +57,23 @@ export function App() {
 }
 
 function Index() {
-  const experiencesQuery = trpc.experiences.feed.useQuery({});
+  const experiencesQuery = trpc.experiences.feed.useInfiniteQuery(
+    {},
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    },
+  );
 
   return (
-    <ExperienceList
-      experiences={experiencesQuery.data?.experiences ?? []}
-      isLoading={experiencesQuery.isLoading}
-    />
+    <InfiniteScroll onLoadMore={experiencesQuery.fetchNextPage}>
+      <ExperienceList
+        experiences={
+          experiencesQuery.data?.pages.flatMap((page) => page.experiences) ?? []
+        }
+        isLoading={
+          experiencesQuery.isLoading || experiencesQuery.isFetchingNextPage
+        }
+      />
+    </InfiniteScroll>
   );
 }
