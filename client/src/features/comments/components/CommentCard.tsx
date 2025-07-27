@@ -3,7 +3,7 @@ import Card from "@/features/shared/components/ui/Card.tsx";
 import { useState } from "react";
 import { CommentEditForm } from "@/features/comments/components/CommentEditForm.tsx";
 import { Button } from "@/features/shared/components/ui/Button.tsx";
-import { trpc } from "@/trpc.ts";
+import { trpc } from "@/router.tsx";
 import { useToast } from "@/features/shared/hooks/useToast.ts";
 import {
   DialogFooter,

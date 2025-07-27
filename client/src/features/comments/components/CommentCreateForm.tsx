@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/features/shared/components/ui/Form.tsx";
 import { Button } from "@/features/shared/components/ui/Button.tsx";
-import { trpc } from "@/trpc.ts";
+import { trpc } from "@/router.tsx";
 import { TextArea } from "@/features/shared/components/ui/TextArea.tsx";
 import { useToast } from "@/features/shared/hooks/useToast.ts";
 

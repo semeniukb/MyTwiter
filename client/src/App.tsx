@@ -3,7 +3,7 @@ import { Toaster } from "./features/shared/components/ui/Toaster";
 import { ThemeProvider } from "@/features/shared/components/ThemeProvider.tsx";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { trpc } from "@/trpc.ts";
+import { trpc } from "@/router.tsx";
 import { httpBatchLink } from "@trpc/client";
 import { env } from "@/lib/utils/env.ts";
 import { ExperienceList } from "@/features/experiences/components/ExperienceList.tsx";
@@ -53,27 +53,5 @@ export function App() {
         </ThemeProvider>
       </QueryClientProvider>
     </trpc.Provider>
-  );
-}
-
-function Index() {
-  const experiencesQuery = trpc.experiences.feed.useInfiniteQuery(
-    {},
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    },
-  );
-
-  return (
-    <InfiniteScroll onLoadMore={experiencesQuery.fetchNextPage}>
-      <ExperienceList
-        experiences={
-          experiencesQuery.data?.pages.flatMap((page) => page.experiences) ?? []
-        }
-        isLoading={
-          experiencesQuery.isLoading || experiencesQuery.isFetchingNextPage
-        }
-      />
-    </InfiniteScroll>
   );
 }
